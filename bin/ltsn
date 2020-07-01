@@ -55,7 +55,7 @@ function main(argv) {
   let arg
 
   while (argv.length) {
-    arg = getArg()
+    arg = getArg() // 获取命令
     switch (arg) {
       case '-v':
       case '-V':
