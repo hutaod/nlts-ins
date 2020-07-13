@@ -1,2 +1,7 @@
-exports.query = require('./lib/query')
-exports.update = require('./lib/update')
+const query = require('./lib/query')
+const update = require('./lib/update')
+
+module.exports = {
+  query,
+  update,
+}

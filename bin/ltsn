@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const color = require('cli-color')
 const pkg = require('../package.json')
 // 从顶层 index.js 里面拿到lib下面模块暴露的方法
 const { query, update } = require('../index')
@@ -8,16 +9,18 @@ const { query, update } = require('../index')
 function printResult(v) {
   update(v).then(dists => {
     const results = query(dists)
-    console.log(results)
+    console.log(color.blue(results))
     process.exit()
   })
 }
 
+// 打印版本号
 function printVersion() {
   console.log(`ltsn ${pkg.version}`)
   process.exit()
 }
 
+// 打印帮助信息
 function printHelp(code) {
   const lines = [
     '',
@@ -39,10 +42,12 @@ function printHelp(code) {
 
 // 包的入口函数，里面对参数做剪裁处理，拿到入参并给予不同入参的处理逻辑
 function main(argv) {
-  if (!argv) {
+  // 1. 判断命令是否存在
+  if (!argv || argv.length === 0) {
     printHelp(1)
   }
 
+  // 获取解析后的参数，获取一个就移出一个
   const getArg = function () {
     let args = argv.shift()
     args = args.split('=')
@@ -55,18 +60,22 @@ function main(argv) {
   let arg
 
   while (argv.length) {
-    arg = getArg() // 获取命令
+    // 2. 获取合法命令，直到所有命令行参数都解析完毕或者程序退出
+    arg = getArg()
     switch (arg) {
+      // 打印版本号
       case '-v':
       case '-V':
       case '--version':
         printVersion()
         break
+      // 打印帮助信息
       case '-h':
       case '-H':
       case '--help':
         printHelp()
         break
+      // 打印查询结构
       default:
         printResult(arg)
         break
