@@ -86,4 +86,5 @@ function main(argv) {
 // 启动程序就开始执行主函数
 main(process.argv.slice(2))
 
+// 导出main函数
 module.exports = main
